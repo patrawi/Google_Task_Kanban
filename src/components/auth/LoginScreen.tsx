@@ -35,7 +35,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           <button
             onClick={onSignIn}
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+            className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
           >
             {isLoading ? (
               <RefreshCw className="w-5 h-5 animate-spin" />

@@ -105,7 +105,7 @@ export const Column: React.FC<ColumnProps> = ({
             </h2>
             <button
               onClick={() => onAddTask(list.id)}
-              className="text-gray-500 hover:text-gray-700 hover:bg-gray-200 p-2 rounded-lg transition-colors"
+              className="cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-200 p-2 rounded-lg transition-colors"
             >
               <Plus size={16} />
             </button>
@@ -150,7 +150,7 @@ export const Column: React.FC<ColumnProps> = ({
                 <p className="text-sm">No tasks yet</p>
                 <button
                   onClick={() => onAddTask(list.id)}
-                  className="mt-2 text-blue-500 hover:text-blue-600 text-sm"
+                  className=" cursor-pointer mt-2 text-blue-500 hover:text-blue-600 text-sm"
                 >
                   Add a task
                 </button>

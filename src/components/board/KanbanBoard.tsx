@@ -3,16 +3,20 @@ import { Task, TaskList, CreateTaskData } from "@/types";
 import { LoginScreen } from "../auth/LoginScreen";
 import { RefreshCw, LogOut } from "lucide-react";
 import { TaskModal } from "../modals/TaskModal";
+import { DeleteConfirmModal } from "../modals/DeleteModal";
 import { Column } from "./Column";
 import { Toast } from "../ui/Toast";
 import { useOAuth } from "../../hooks/useOAuth";
+
 const KanbanBoard: React.FC = () => {
   const { isAuthenticated, user, isLoading, apiService, signIn, signOut } =
     useOAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskLists, setTaskLists] = useState<TaskList[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const [newTaskListId, setNewTaskListId] = useState<string | null>(null);
   const [toast, setToast] = useState<{
     message: string;
@@ -122,25 +126,35 @@ const KanbanBoard: React.FC = () => {
     [apiService, editingTask, newTaskListId, showToast],
   );
 
-  const handleDeleteTask = useCallback(
-    async (task: Task): Promise<void> => {
-      if (!apiService) return;
+  const handleDeleteTask = useCallback((task: Task): void => {
+    setTaskToDelete(task);
+    setDeleteModalOpen(true);
+  }, []);
 
-      // Optimistic update - remove from UI immediately
-      setTasks((prevTasks) => prevTasks.filter((t) => t.id !== task.id));
-      showToast("Task deleted", "success");
+  const handleConfirmDelete = useCallback(async (): Promise<void> => {
+    if (!apiService || !taskToDelete) return;
 
-      try {
-        await apiService.deleteTask(task.taskListId, task.id);
-      } catch (error) {
-        // Revert optimistic update on error
-        setTasks((prevTasks) => [...prevTasks, task]);
-        showToast("Error deleting task", "error");
-        console.error("Error deleting task:", error);
-      }
-    },
-    [apiService, showToast],
-  );
+    // Optimistic update - remove from UI immediately
+    setTasks((prevTasks) => prevTasks.filter((t) => t.id !== taskToDelete.id));
+    setDeleteModalOpen(false);
+    showToast("Task deleted", "success");
+
+    try {
+      await apiService.deleteTask(taskToDelete.taskListId, taskToDelete.id);
+    } catch (error) {
+      // Revert optimistic update on error
+      setTasks((prevTasks) => [...prevTasks, taskToDelete]);
+      showToast("Error deleting task", "error");
+      console.error("Error deleting task:", error);
+    } finally {
+      setTaskToDelete(null);
+    }
+  }, [apiService, taskToDelete, showToast]);
+
+  const handleCancelDelete = useCallback((): void => {
+    setDeleteModalOpen(false);
+    setTaskToDelete(null);
+  }, []);
 
   const handleMoveTask = useCallback(
     async (
@@ -178,12 +192,14 @@ const KanbanBoard: React.FC = () => {
     },
     [apiService, tasks, showToast],
   );
+
   const getTasksForList = useCallback(
     (listId: string): Task[] => {
       return tasks.filter((task) => task.taskListId === listId);
     },
     [tasks],
   );
+
   const handleReorderTask = useCallback(
     async (taskId: string, listId: string, newIndex: number): Promise<void> => {
       if (!apiService) return;
@@ -378,6 +394,13 @@ const KanbanBoard: React.FC = () => {
         task={editingTask}
         onSave={handleSaveTask}
         onClose={handleCloseModal}
+      />
+
+      <DeleteConfirmModal
+        isOpen={deleteModalOpen}
+        task={taskToDelete}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
       />
 
       {toast && (

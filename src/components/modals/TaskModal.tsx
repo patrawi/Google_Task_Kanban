@@ -44,15 +44,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-white backdrop-invert backdrop-opacity-10 rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900">
             {task ? "Edit Task" : "Add New Task"}
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 p-1 rounded"
+            className="text-gray-400 hover:text-gray-600 p-1 rounded cursor-pointer"
           >
             <X size={20} />
           </button>

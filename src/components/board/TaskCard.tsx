@@ -85,7 +85,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         <div className="flex items-center space-x-1">
           <button
             onClick={() => onToggleComplete(task)}
-            className={`w-4 h-4 rounded border-2 transition-colors ${
+            className={`w-4 h-4 rounded border-2 cursor-pointer transition-colors ${
               isCompleted
                 ? "bg-green-500 border-green-500"
                 : "border-gray-300 hover:border-green-400"
@@ -105,7 +105,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               </svg>
             )}
           </button>
-          <button className="text-gray-400 hover:text-gray-600 p-1 rounded">
+          <button className="text-gray-400 hover:text-gray-600 p-1 rounded cursor-pointer">
             <MoreVertical size={16} />
           </button>
         </div>
@@ -132,13 +132,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         <div className="flex space-x-1">
           <button
             onClick={() => onEdit(task)}
-            className="text-gray-400 hover:text-blue-500 p-1 rounded"
+            className="text-gray-400 hover:text-blue-500 p-1 rounded cursor-pointer"
           >
             <Edit3 size={12} />
           </button>
           <button
             onClick={() => onDelete(task)}
-            className="text-gray-400 hover:text-red-500 p-1 rounded"
+            className="text-gray-400 hover:text-red-500 p-1 rounded cursor-pointer"
           >
             <Trash2 size={12} />
           </button>

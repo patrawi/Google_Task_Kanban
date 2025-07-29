@@ -26,7 +26,7 @@ export const Toast: React.FC<ToastProps> = ({ message, type, onClose }) => {
       <span>{message}</span>
       <button
         onClick={onClose}
-        className="ml-2 hover:bg-white hover:bg-opacity-20 rounded p-1"
+        className="ml-2 hover:bg-white hover:bg-opacity-20 rounded p-1 cursor-pointer"
       >
         <X size={16} />
       </button>

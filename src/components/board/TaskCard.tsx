@@ -105,9 +105,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               </svg>
             )}
           </button>
-          <button className="text-gray-400 hover:text-gray-600 p-1 rounded cursor-pointer">
-            <MoreVertical size={16} />
-          </button>
         </div>
       </div>
 
